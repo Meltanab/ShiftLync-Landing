@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ShiftLync – Linking every shift, pharmacist, and pharmacy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="ShiftLync is a smart scheduling and staffing platform built for pharmacies – linking shift vacancies, teams, and relief pharmacists in one place."
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #1e3a8a, #4f46e5, #9333ea);
+      --primary: #4f46e5;
+      --primary-soft: rgba(79, 70, 229, 0.12);
+      --accent: #22c55e;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --surface: #0b1020;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.35);
+      --border-subtle: rgba(148, 163, 184, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #020617 0, #020617 40%, #020617 100%);
+      color: white;
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 56px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: var(--bg-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 25px rgba(79, 70, 229, 0.65);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-logo::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 10% -10%, rgba(255, 255, 255, 0.35), transparent 55%);
+      mix-blend-mode: screen;
+    }
+
+    .brand-logo span {
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-text-main {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-text-sub {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-letter-spacing: 0.18em;
+      color: #9ca3af;
+    }
+
+    .header-cta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.18);
+    }
+
+    .btn-outline {
+      font-size: 12px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.75);
+      color: #e5e7eb;
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(248, 250, 252, 0.8);
+      background: rgba(15, 23, 42, 0.95);
+      transform: translateY(-1px);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (max-width: 840px) {
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .page {
+        padding-inline: 18px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-cta {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      padding: 4px 10px 4px 4px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      margin-bottom: 14px;
+    }
+
+    .hero-kicker-pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.14);
+      color: #bbf7d0;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    h1 {
+      font-size: clamp(32px, 4vw, 40px);
+      line-height: 1.05;
+      margin-bottom: 10px;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-gradient-text {
+      background: linear-gradient(120deg, #e5e7eb, #c7d2fe, #f97316);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: #cbd5f5;
+      max-width: 460px;
+      margin-bottom: 16px;
+    }
+
+    .hero-points {
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: #cbd5f5;
+      margin-bottom: 20px;
+    }
+
+    .hero-point {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .hero-point-icon {
+      margin-top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.15);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .btn-primary {
+      padding: 10px 18px;
+      font-size: 13px;
+      border-radius: 999px;
+      border: none;
+      background-image: linear-gradient(135deg, #4f46e5, #6366f1, #a855f7);
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 16px 32px rgba(79, 70, 229, 0.55);
+      transition: transform 0.18s ease-out, box-shadow 0.18s ease-out,
+        filter 0.18s ease-out;
+    }
+
+    .btn-primary span {
+      font-size: 15px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1.5px);
+      box-shadow: 0 20px 45px rgba(79, 70, 229, 0.65);
+      filter: brightness(1.04);
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      padding: 9px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      color: #e5e7eb;
+      cursor: pointer;
+      transition: all 0.18s ease-out;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 0.95);
+      border-style: solid;
+    }
+
+    .hero-footnote {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .hero-footnote strong {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    /* Right panel */
+    .hero-panel {
+      background: radial-gradient(circle at top left, #111827 0, #020617 55%);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: -80%;
+      background: radial-gradient(
+        circle at 10% 0,
+        rgba(59, 130, 246, 0.6),
+        transparent 55%
+      );
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .hero-panel-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      background: rgba(15, 23, 42, 0.85);
+      color: #e5e7eb;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      background: rgba(79, 70, 229, 0.15);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .panel-subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .panel-tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      color: #bbf7d0;
+    }
+
+    .panel-grid {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .panel-card {
+      padding: 10px 11px;
+      border-radius: 14px;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+      background: radial-gradient(circle at top, #020617 0, #020617 55%);
+      position: relative;
+    }
+
+    .panel-card h3 {
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .panel-card p {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .mini-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .mini-badge {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      color: #e5e7eb;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .metric-label {
+      color: #9ca3af;
+    }
+
+    .metric-chip {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.15);
+      color: #bbf7d0;
+      font-size: 10px;
+    }
+
+    .timeline {
+      margin-top: 8px;
+    }
+
+    .timeline-label {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .timeline-bar {
+      position: relative;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(30, 64, 175, 0.7);
+      overflow: hidden;
+    }
+
+    .timeline-fill {
+      position: absolute;
+      inset: 0;
+      width: 72%;
+      background-image: linear-gradient(
+        90deg,
+        #22c55e,
+        #4ade80,
+        #a855f7,
+        #6366f1
+      );
+    }
+
+    .panel-footer {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(51, 65, 85, 0.9);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .panel-footer strong {
+      color: #e5e7eb;
+    }
+
+    /* Early access form */
+    .early-access {
+      margin-top: 26px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(30, 64, 175, 0.7);
+      max-width: 460px;
+    }
+
+    .early-access-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .early-access-sub {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .early-access-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .field-input {
+      flex: 1 1 180px;
+      min-width: 0;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 9px 12px;
+      font-size: 12px;
+      color: #e5e7eb;
+      outline: none;
+    }
+
+    .field-input::placeholder {
+      color: #6b7280;
+    }
+
+    .btn-small {
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: none;
+      background-image: linear-gradient(135deg, #22c55e, #4ade80, #a3e635);
+      color: #022c22;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 12px 24px rgba(22, 163, 74, 0.45);
+      transition: all 0.18s ease-out;
+    }
+
+    .btn-small:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 32px rgba(22, 163, 74, 0.55);
+    }
+
+    footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(30, 64, 175, 0.7);
+      font-size: 11px;
+      color: #6b7280;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: #9ca3af;
+    }
+
+    .footer-links a:hover {
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">
+          <span>SL</span>
+        </div>
+        <div>
+          <div class="brand-text-main">ShiftLync</div>
+          <div class="brand-text-sub">PHARMACY STAFFING OS</div>
+        </div>
+      </div>
+      <div class="header-cta">
+        <div class="badge-pill">
+          <span class="badge-dot"></span>
+          Closed beta for early pharmacies
+        </div>
+        <button class="btn-outline" onclick="document.getElementById('early-access').scrollIntoView({behavior:'smooth'})">
+          Get early access
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Left: hero copy -->
+      <section>
+        <div class="hero-kicker">
+          <div class="hero-kicker-pill">Built by pharmacists</div>
+          <span>For independent & remote pharmacies</span>
+        </div>
+
+        <h1>
+          <span class="hero-gradient-text">Linking every shift, pharmacist, and pharmacy.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          ShiftLync replaces messy spreadsheets, endless group chats, and expensive agencies with one smart platform for scheduling and relief staffing.
+        </p>
+
+        <div class="hero-points">
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>See all vacancies, swaps, and coverage gaps across your pharmacies in one live view.</div>
+          </div>
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>Verified relief pharmacists pick up shifts directly – no 20–30% agency cut.</div>
+          </div>
+          <div class="hero-point">
+            <div class="hero-point-icon">✓</div>
+            <div>Smart rules to prevent double-booking, conflicts, and compliance headaches.</div>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="document.getElementById('early-access').scrollIntoView({behavior:'smooth'})">
+            <span>Join the early access list</span> →
+          </button>
+          <button class="btn-ghost">
+            Watch concept demo (coming soon)
+          </button>
+        </div>
+
+        <div class="hero-footnote">
+          <strong>Phase 1 MVP:</strong> internal scheduling + staff sharing + relief marketplace for selected Canadian cities.
+        </div>
+      </section>
+
+      <!-- Right: product-style panel -->
+      <aside class="hero-panel">
+        <div class="hero-panel-inner">
+          <div class="pill-row">
+            <div class="pill">
+              <div class="pill-icon">★</div>
+              Thunder Bay · Cold Lake · Remote
+            </div>
+            <div class="pill">
+              <div class="pill-icon">⏱</div>
+              Cuts scheduling time by up to 60%
+            </div>
+          </div>
+
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Shift vacancy lifecycle</div>
+              <div class="panel-subtitle">From gap → post → match → confirmed.</div>
+            </div>
+            <div class="panel-tag">Live preview</div>
+          </div>
+
+          <div class="panel-grid">
+            <div class="panel-card">
+              <h3>Manager View</h3>
+              <p>
+                Today · Main Pharmacy · 9 AM – 5 PM · Pharmacist-in-Charge
+              </p>
+              <div class="mini-badge-row">
+                <span class="mini-badge">Kroll · Methadone</span>
+                <span class="mini-badge">High-volume retail</span>
+                <span class="mini-badge">Relief eligible</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-label">Coverage status</span>
+                <span class="metric-chip">1 internal · 2 relief matches</span>
+              </div>
+            </div>
+
+            <div class="panel-card">
+              <h3>Relief Matches</h3>
+              <p>
+                Smart-matched pharmacists based on availability, distance, tags, and rate.
+              </p>
+              <div class="mini-badge-row">
+                <span class="mini-badge">A. Singh · 12 km · $75/hr</span>
+                <span class="mini-badge">M. Eltanab · 5 km · $80/hr</span>
+                <span class="mini-badge">Verified · 4.9★</span>
+              </div>
+              <div class="metric-row">
+                <span class="metric-label">ETA to confirm</span>
+                <span class="metric-chip">~ 7 minutes</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline">
+            <div class="timeline-label">Shift lifecycle completion</div>
+            <div class="timeline-bar">
+              <div class="timeline-fill"></div>
+            </div>
+          </div>
+
+          <div class="panel-footer">
+            <span>
+              <strong>No more spreadsheets.</strong> One place for all shift gaps, swaps, and relief.
+            </span>
+            <span>Built for Canadian pharmacy workflows.</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Early access section -->
+    <section id="early-access" class="early-access">
+      <div class="early-access-title">Be one of the first pharmacies on ShiftLync.</div>
+      <div class="early-access-sub">
+        We’re onboarding a small group of independent and remote pharmacies in Canada for our MVP launch. Leave your details and we’ll reach out with a short discovery call.
+      </div>
+      <form class="early-access-form" onsubmit="event.preventDefault(); alert('This is a static preview. Connect this form to your backend or a tool like Netlify Forms.');">
+        <input
+          type="text"
+          class="field-input"
+          placeholder="Pharmacy / organization name"
+          required
+        />
+        <input
+          type="email"
+          class="field-input"
+          placeholder="Work email"
+          required
+        />
+        <button type="submit" class="btn-small">
+          Request early access →
+        </button>
+      </form>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> ShiftLync. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#">Product vision</a>
+        <a href="#">For pharmacies</a>
+        <a href="#">For relief pharmacists</a>
+        <a href="#">Privacy · Terms</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
